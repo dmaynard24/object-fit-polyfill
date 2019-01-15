@@ -8,7 +8,7 @@ function ObjectFitPolyfill(selector, options) {
 		top: '50%',
 		left: '50%',
 		transform: 'translate(-50%, -50%)',
-		zIndex: '-1'
+		zIndex: '0'
 	}
 	this.parentStyles = {
 		overflow: 'hidden'
@@ -35,6 +35,9 @@ function ObjectFitPolyfill(selector, options) {
 					element.style.maxWidth = 'none';
 					element.style.maxHeight = '100%';
 				}
+			} else {
+				element.style.maxWidth = 'none';
+				element.style.maxHeight = 'none';
 			}
 		}
 	}

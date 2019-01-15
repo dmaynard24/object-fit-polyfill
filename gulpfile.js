@@ -23,7 +23,7 @@ gulp.task('js', function() {
     }
 
     return gulp.src(arrPartials)
-        .pipe(concat('scroll-show.min.js'))
+        .pipe(concat('object-fit-polyfill.min.js'))
         // .pipe(babel({
         //     presets: ['env']
         // }))
