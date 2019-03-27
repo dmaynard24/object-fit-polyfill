@@ -1,8 +1,10 @@
-function ObjectFitPolyfill(selector, options) {
+function ObjectFitPolyfill(selector) {
 	this.elementStyles = {
 		position: 'absolute',
 		minWidth: '100%',
 		minHeight: '100%',
+		maxWidth: 'none',
+		maxHeight: 'none',
 		width: 'auto',
 		height: 'auto',
 		top: '50%',
@@ -26,9 +28,12 @@ function ObjectFitPolyfill(selector, options) {
 				parentHeight = parentBoundingRect.height;
 
 			if (elementWidth > parentWidth && elementHeight > parentHeight) {
-				var widthDiff = elementWidth - parentWidth,
-					heightDiff = elementHeight - parentHeight;
-				if (widthDiff <= heightDiff) {
+				element.style.minWidth = 'none';
+				element.style.minHeight = 'none';
+
+				var elementAspectRatio = elementWidth / elementHeight,
+					parentAspectRatio = parentWidth / parentHeight;
+				if (elementAspectRatio <= parentAspectRatio) {
 					element.style.maxWidth = '100%';
 					element.style.maxHeight = 'none';
 				} else {
@@ -36,9 +41,11 @@ function ObjectFitPolyfill(selector, options) {
 					element.style.maxHeight = '100%';
 				}
 			} else {
-				element.style.maxWidth = 'none';
-				element.style.maxHeight = 'none';
-			}
+				element.style.minWidth = '100%';
+				element.style.minHeight = '100%';
+        element.style.maxWidth = 'none';
+        element.style.maxHeight = 'none';
+      }
 		}
 	}
 
@@ -58,7 +65,7 @@ function ObjectFitPolyfill(selector, options) {
 			}
 			if (!parent.style.position || parent.style.position == 'static') {
 				parent.style.position = 'relative';
-			}
+      }
 			element.addEventListener('loadedmetadata', this.fitObjects);
 		}
 
