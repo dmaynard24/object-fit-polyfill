@@ -43,9 +43,9 @@ function ObjectFitPolyfill(selector) {
 			} else {
 				element.style.minWidth = '100%';
 				element.style.minHeight = '100%';
-        element.style.maxWidth = 'none';
-        element.style.maxHeight = 'none';
-      }
+				element.style.maxWidth = 'none';
+				element.style.maxHeight = 'none';
+			}
 		}
 	}
 
@@ -65,7 +65,7 @@ function ObjectFitPolyfill(selector) {
 			}
 			if (!parent.style.position || parent.style.position == 'static') {
 				parent.style.position = 'relative';
-      }
+			}
 			element.addEventListener('loadedmetadata', this.fitObjects);
 		}
 
