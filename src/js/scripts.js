@@ -1,1 +1,1 @@
-'src/js/object-fit-polyfill.js'
+'src/js/object-fit-polyfill.js';
