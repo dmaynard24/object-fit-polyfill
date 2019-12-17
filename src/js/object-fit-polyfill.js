@@ -15,11 +15,11 @@ function ObjectFitPolyfill(selector) {
   this.parentStyles = {
     overflow: 'hidden'
   };
+  this.elements = [];
 
   this.fitObjects = function() {
-    var elements = document.querySelectorAll('.object-fit');
-    for (var i = 0; i < elements.length; i++) {
-      var element = elements[i],
+    for (var i = 0; i < this.elements.length; i++) {
+      var element = this.elements[i],
         elementWidth = element.videoWidth || element.naturalWidth,
         elementHeight = element.videoHeight || element.naturalHeight,
         parent = element.parentElement,
@@ -50,11 +50,10 @@ function ObjectFitPolyfill(selector) {
   };
 
   this.constructor = function() {
-    var elements = document.querySelectorAll(selector);
+    this.elements = document.querySelectorAll(selector);
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i],
         parent = element.parentElement;
-      element.classList.add('object-fit');
       for (var j = 0; j < Object.keys(this.elementStyles).length; j++) {
         var key = Object.keys(this.elementStyles)[j];
         element.style[key] = this.elementStyles[key];
@@ -73,5 +72,12 @@ function ObjectFitPolyfill(selector) {
     window.addEventListener('resize', this.fitObjects.bind(this));
   };
 
-  this.constructor();
+  if (isIeOrEdge()) {
+    this.constructor();
+  }
+}
+
+function isIeOrEdge() {
+  var ua = navigator.userAgent;
+  return ua.indexOf('Trident/') > -1 || ua.indexOf('MSIE ') > -1 || ua.indexOf('Edge/') > -1;
 }
