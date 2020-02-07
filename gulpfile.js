@@ -1,13 +1,39 @@
-var gulp = require('gulp'),
+const gulp = require('gulp'),
   concat = require('gulp-concat'),
   uglify = require('gulp-uglify'),
   del = require('del'),
   fs = require('fs'),
-  runSequence = require('run-sequence');
+  runSequence = require('run-sequence'),
+  browserSync = require('browser-sync').create();
+
+let options = {
+  cssFilename: 'styles',
+  jsFilename: 'scripts'
+};
+
+// flag for catching errors and passing between tasks
+let caughtError = false;
 
 /* --------------------------- development process for building ---------------------------------  */
 gulp.task('default', function(callback) {
-  runSequence('clean:dist', ['js', 'watch'], callback);
+  runSequence('clean:dist', ['html', 'js', 'init:browserSync', 'watch'], callback);
+});
+
+/* browser sync auto reloads the browser */
+gulp.task('init:browserSync', function() {
+  browserSync.init({
+    server: {
+      baseDir: 'dist/'
+    }
+  });
+});
+
+/* trigger a manual reload */
+gulp.task('browserSync', function(done) {
+  if (!caughtError) {
+    browserSync.reload();
+  }
+  done();
 });
 
 /* minifies scroll-show.js and moves it */
@@ -34,12 +60,21 @@ gulp.task('js', function() {
   );
 });
 
-/* watchers to help browser sync auto reload */
-gulp.task('watch', ['js'], function() {
-  gulp.watch('src/js/**/*.js', ['js']);
+/* watchers to run tasks automatically then trigger browser reload */
+gulp.task('watch', function() {
+  gulp.watch('src/*.html', function() {
+    runSequence('html', ['browserSync']);
+  });
+  gulp.watch(['src/js/**/*.js', `src/js/${options.jsFilename}.js`], function() {
+    runSequence('js', ['browserSync']);
+  });
 });
 
 /* cleans out folder */
 gulp.task('clean:dist', function() {
   return del.sync('dist', { force: true });
+});
+
+gulp.task('html', function() {
+  return gulp.src(['src/**/*.html']).pipe(gulp.dest('dist/'));
 });
