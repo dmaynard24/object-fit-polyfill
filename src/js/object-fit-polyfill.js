@@ -94,6 +94,5 @@ function ObjectFitPolyfill(selector) {
 
 function isIE() {
   var ua = navigator.userAgent;
-  console.log(ua);
   return ua.indexOf('Trident/') > -1 || ua.indexOf('MSIE ') > -1;
 }
